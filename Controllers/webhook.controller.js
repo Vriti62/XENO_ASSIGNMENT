@@ -62,6 +62,11 @@ exports.webhookData = async (req, res) => {
           data:inventory_items,
           msg:"inventory_items created successfully!"
         })
+      case "checkout/abandon":
+        const checkout = await handleCheckoutWebhook(data,storeData);
+        return res.status(200).json({
+          data:checkout
+        })
 
       default:
         return res.status(400).json({ msg: "Unhandled Shopify event" });
@@ -173,6 +178,39 @@ async function saveInventoryItemToDB(data) {
     }
   });
   return inventory_items;
+}
+
+async function handleCheckoutWebhook(req, res) {
+  try {
+    const { id, email, line_items } = req.body; // Shopify payload
+
+    if (!email) {
+      return res.status(400).json({ success: false, msg: "Email required" });
+    }
+
+    // Redis key banayenge
+    const checkoutKey = `checkout:${id}`;
+    await redis.setex(checkoutKey, 180, JSON.stringify({ email, line_items }));
+
+    // Timer lagayenge (3 min demo ke liye)
+    setTimeout(async () => {
+      const data = await redis.get(checkoutKey);
+      if (data) {
+        const { email, line_items } = JSON.parse(data);
+
+        // Abandoned cart email
+        await abandonCartEmail(email, line_items);
+
+        // Redis key delete
+        await redis.del(checkoutKey);
+      }
+    }, 180000);
+
+    res.status(200).json({ success: true, msg: "Checkout tracked" });
+  } catch (err) {
+    console.error("❌ Checkout webhook error:", err);
+    res.status(500).json({ success: false, msg: err.message });
+  }
 }
 
 
