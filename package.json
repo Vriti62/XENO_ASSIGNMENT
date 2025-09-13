@@ -20,9 +20,12 @@
   "homepage": "https://github.com/Vriti62/XENO_ASSIGNMENT#readme",
   "dependencies": {
     "@prisma/client": "^6.16.0",
+    "cookie-parser": "^1.4.7",
+    "crypto": "^1.0.1",
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
     "ioredis": "^5.7.0",
+    "jsonwebtoken": "^9.0.2",
     "nodemailer": "^7.0.6",
     "prisma": "^6.16.0"
   }

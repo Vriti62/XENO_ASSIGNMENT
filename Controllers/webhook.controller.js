@@ -20,7 +20,10 @@ exports.webhookData = async (req, res) => {
     let storeData = await prisma.store.upsert({
       where: { store_name: store },
       update: {},
-      create: { store_name: store }
+      create: { 
+        store_name: store,
+        user_email:data.email 
+      }
     });
 
     switch(event) {
@@ -88,7 +91,6 @@ async function saveCustomersToDB(data) {
       id: data.id.toString(),
       cust_name: `${data.first_name} ${data.last_name}`,
       cust_email: data.email,
-      cust_password: "",
       created_at: data.published_at ? new Date(data.published_at) : new Date()
     }
 });
@@ -159,10 +161,11 @@ async function removeDeletedInDB(data,storeData){
       id: data.id.toString()
     }
   })
+  return deletedOrder;
 }
 
 async function saveInventoryItemToDB(data) {
-  return await prisma.inventoryItem.create({
+  const inventory_items = await prisma.inventoryItem.create({
     data: {
       id: data.id.toString(),
       sku: data.sku,
@@ -171,6 +174,7 @@ async function saveInventoryItemToDB(data) {
       weight_unit: data.weight_unit
     }
   });
+  return inventory_items;
 }
 
 

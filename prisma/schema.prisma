@@ -17,6 +17,7 @@ datasource db {
 model Store{
   id String @id @default(uuid())
   store_name String @unique
+  user_email String? 
   product Product[]
   order Order[]
   created_at DateTime @default(now())
@@ -27,7 +28,6 @@ model Customer{
   id String @id
   cust_name String
   cust_email String @unique
-  cust_password String 
   order Order[]
   created_at DateTime @default(now())
 }
@@ -41,7 +41,6 @@ model Product{
   prod_tags String
   store Store @relation(fields:[store_id], references: [id], onDelete: Cascade)
   store_id String
-  cart Cart[]
   orderItem OrderItem[]
   created_at DateTime @default(now())
 }
@@ -66,17 +65,6 @@ model OrderItem {
   order_id String 
   product Product @relation(fields:[prod_id], references: [id], onDelete:Cascade)
   prod_id String 
-  quantity Int
-  created_at DateTime @default(now())
-}
-
-//cart saved
-model Cart {
-  id String @id
-  product Product @relation(fields:[prod_id], references: [id],  onDelete:Cascade)
-  prod_id String 
-  line_items_id String
-  variant_id String
   quantity Int
   created_at DateTime @default(now())
 }
