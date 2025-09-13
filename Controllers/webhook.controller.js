@@ -159,10 +159,11 @@ async function removeDeletedInDB(data,storeData){
       id: data.id.toString()
     }
   })
+  return deletedOrder;
 }
 
 async function saveInventoryItemToDB(data) {
-  return await prisma.inventoryItem.create({
+  const inventory_items = await prisma.inventoryItem.create({
     data: {
       id: data.id.toString(),
       sku: data.sku,
@@ -171,6 +172,7 @@ async function saveInventoryItemToDB(data) {
       weight_unit: data.weight_unit
     }
   });
+  return inventory_items;
 }
 
 
