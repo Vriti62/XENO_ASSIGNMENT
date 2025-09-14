@@ -19,7 +19,7 @@ exports.getOrdersByDate = async (req, res) => {
 
     const start = new Date(startDate);
     const end = new Date(endDate);
-    end.setHours(23, 59, 59, 999); // include full day
+    end.setHours(23, 59, 59, 999); //  full day
 
     if (isNaN(start) || isNaN(end)) {
       return res.status(400).json({ msg: "Invalid date format" });
@@ -76,7 +76,6 @@ const customersWithTotal = topCustomers.map(cust => {
         return { id: cust.id, name: cust.cust_name, email: cust.cust_email, totalSpent };
     });
 
-    // sort desc and take top 5
         customersWithTotal.sort((a, b) => b.totalSpent - a.totalSpent);
         res.status(200).json({ topCustomers: customersWithTotal.slice(0, 5) });
 

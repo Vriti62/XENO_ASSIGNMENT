@@ -1,4 +1,3 @@
-// redis.js
 const Redis = require("ioredis");
 
 

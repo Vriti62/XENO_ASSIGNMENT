@@ -3,7 +3,7 @@ const crypto = require("crypto");
 exports.verifyShopifyWebhook=(req, res, next) => {
   try {
     const hmacHeader = req.get("X-Shopify-Hmac-Sha256");
-    const body = req.rawBody; // raw body lena zaroori hai, JSON parse hone se pehle
+    const body = req.rawBody; 
     const secret = process.env.SHOPIFY_API_SECRET;
 
     const digest = crypto

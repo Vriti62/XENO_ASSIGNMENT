@@ -16,12 +16,12 @@ app.use(express.urlencoded({extended: true}))
 app.use(cors({
   origin: `${process.env.REACT_API_URL}`,
   credentials: true
-})); // React dev server origin
+}));
 
 app.use(
   express.json({
     verify: (req, res, buf) => {
-      req.rawBody = buf; // yeh zaroori hai!
+      req.rawBody = buf; 
     }
   })
 );
