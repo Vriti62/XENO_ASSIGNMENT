@@ -14,7 +14,7 @@ const userRoutes = require('./Routes/user.routes');
 app.use(express.urlencoded({extended: true}))
 
 app.use(cors({
-  origin: "http://localhost:3000",
+  origin: `${process.env.REACT_API_URL}`,
   credentials: true
 })); // React dev server origin
 
