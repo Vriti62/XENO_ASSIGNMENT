@@ -14,7 +14,7 @@ const LoginForm = ({ onLogin }) => {
     setError("")
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/user/login`, {
+      const response = await fetch(`${import.meta.env.REACT_API_URL}/api/user/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

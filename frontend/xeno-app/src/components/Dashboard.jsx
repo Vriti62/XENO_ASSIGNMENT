@@ -23,21 +23,21 @@ export default function Dashboard({ user, onLogout }) {
     setLoading(true);
     try {
       const customersResponse = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/data/customers-count`,
+        `${import.meta.env.REACT_API_URL}/api/data/customers-count`,
         { credentials: "include" }
       );
       const customersData = await customersResponse.json();
       setTotalCustomers(customersData.total_customers);
 
       const ordersResponse = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/data/orders-by-date?store=${user.id}&startDate=${dateRange.startDate}&endDate=${dateRange.endDate}`,
+        `${import.meta.env.REACT_API_URL}/api/data/orders-by-date?store=${user.id}&startDate=${dateRange.startDate}&endDate=${dateRange.endDate}`,
         { credentials: "include" }
       );
       const ordersData = await ordersResponse.json();
       setOrdersData(ordersData.orders || []);
 
       const topCustomersResponse = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/data/top-customers?store=${user.id}`,
+        `${import.meta.env.REACT_API_URL}/api/data/top-customers?store=${user.id}`,
         { credentials: "include" }
       );
       const topCustomersData = await topCustomersResponse.json();
