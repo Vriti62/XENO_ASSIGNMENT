@@ -14,7 +14,7 @@ const userRoutes = require('./Routes/user.routes');
 app.use(express.urlencoded({extended: true}))
 
 app.use(cors({
-  origin: [`${process.env.REACT_API_URL}`],
+  origin: ["https://xeno-assignment-2.onrender.com/"],
   credentials: true
 }));
 
