@@ -13,8 +13,8 @@ const userRoutes = require('./Routes/user.routes');
 
 app.use(express.urlencoded({extended: true}))
 
-app.options('*', cors({
-  origin: "https://xeno-assignment-2.onrender.com",
+app.use(cors({
+  origin: "https://xeno-assignment-2f.onrender.com",
   credentials: true
 }));
 
