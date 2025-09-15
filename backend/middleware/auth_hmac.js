@@ -1,24 +1,23 @@
 const crypto = require("crypto");
 
-const STORE_SECRETS = {
-  "24seventy.myshopify.com": process.env.WEBHOOK_SECRET_STORE2,
-  "xeno-assign.myshopify.com": process.env.WEBHOOK_SECRET_STORE1,
-};
+// Parse all secrets from .env (single JSON variable)
+const STORE_SECRETS = process.env.STORE_SECRETS
+  ? JSON.parse(process.env.STORE_SECRETS)
+  : {};
 
-
-exports.verifyShopifyWebhook=(req, res, next) => {
+exports.verifyShopifyWebhook = (req, res, next) => {
   try {
     const hmacHeader = req.get("X-Shopify-Hmac-Sha256");
-    const body = req.rawBody; 
-    
+    const body = req.rawBody;
     const store = req.headers["x-shopify-shop-domain"];
 
     const secret = STORE_SECRETS[store];
-        
+
     console.log("Incoming store:", store);
     console.log("Resolved secret:", secret);
+
     if (!secret) {
-      console.log("Unknown store: ", store);
+      console.log("Unknown store:", store);
       return res.status(401).json({ msg: "Unauthorized store" });
     }
 
@@ -28,14 +27,14 @@ exports.verifyShopifyWebhook=(req, res, next) => {
       .digest("base64");
 
     if (digest !== hmacHeader) {
-      console.log("not authorized")
+      console.log("not authorized");
       return res.status(401).json({ msg: "Unauthorized - Invalid HMAC" });
     }
-    console.log("auth done")
-    next(); 
+
+    console.log("auth done");
+    next();
   } catch (err) {
     console.error("Webhook verification failed:", err);
     return res.status(400).json({ msg: "Webhook verification failed" });
   }
-}
-
+};
