@@ -93,8 +93,9 @@ async function saveCustomersToDB(data) {
       cust_email: data.email,
       created_at: data.published_at ? new Date(data.published_at) : new Date()
     }
+    
 });
-
+    return newCustomer;
 }
 
 async function saveProductToDB(data, storeData) {
@@ -117,7 +118,7 @@ async function saveOrdersToDB(data, storeData) {
   const newOrder = await prisma.order.create({
     data: {
       id: data.id.toString(),
-      cust_id: data.customer.id.toString(),
+      cust_id: data.customer ? data.customer.id.toString() : null,
       order_number: data.order_number,
       order_name: data.line_items[0].name,
       order_price: data.subtotal_price,
