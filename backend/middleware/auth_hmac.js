@@ -1,8 +1,8 @@
 const crypto = require("crypto");
 
 const STORE_SECRETS = {
-  "24seventy.myshopify.com": process.env.WEBHOOK_SECRET_STORE1,
-  "xeno-assign.myshopify.com": process.env.WEBHOOK_SECRET_STORE2,
+  "24seventy.myshopify.com": process.env.WEBHOOK_SECRET_STORE2,
+  "xeno-assign.myshopify.com": process.env.WEBHOOK_SECRET_STORE1,
 };
 
 
