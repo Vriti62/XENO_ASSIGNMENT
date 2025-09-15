@@ -1,10 +1,22 @@
 const crypto = require("crypto");
 
+const STORE_SECRETS = {
+  "store1.myshopify.com": process.env.WEBHOOK_SECRET_STORE1,
+  "store2.myshopify.com": process.env.WEBHOOK_SECRET_STORE2,
+};
+
 exports.verifyShopifyWebhook=(req, res, next) => {
   try {
     const hmacHeader = req.get("X-Shopify-Hmac-Sha256");
     const body = req.rawBody; 
-    const secret = process.env.SHOPIFY_API_SECRET;
+    
+    const store = req.headers["x-shopify-shop-domain"];
+
+    const secret = STORE_SECRETS[store];
+    if (!secret) {
+      console.log("Unknown store: ", store);
+      return res.status(401).json({ msg: "Unauthorized store" });
+    }
 
     const digest = crypto
       .createHmac("sha256", secret)
