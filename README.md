@@ -2,7 +2,7 @@ Shopify Analytics Backend
 
 This project provides a full-stack service to receive, verify, and process Shopify Webhooks and show data for frontend dashboards. It supports multiple Shopify stores with per-store webhook secret verification, deduplication using Redis, and persistence via PostgreSQL + Prisma.
 
-### Setup Instructions
+# Setup Instructions
   1. Clone the Repository
   git clone https://github.com/Vriti62/XENO_ASSIGNMENT.git
   
@@ -15,10 +15,10 @@ This project provides a full-stack service to receive, verify, and process Shopi
   
   PORT=4000
 
-  # Database
+  Database
   DATABASE_URL=postgresql://<USER>:<PASSWORD>@<HOST>/<DB_NAME>?schema=public
   
-  # Redis
+  Redis
   REDIS_URL=rediss://<USER>:<PASSWORD>@<HOST>:6379
 
 
@@ -31,7 +31,7 @@ This project provides a full-stack service to receive, verify, and process Shopi
 
 Backend will run on http://localhost:4000.
 
-🏗️ Architecture
+# Architecture
 flowchart TD
   Shopify[Shopify Store] -->|Webhook Events| Backend
   Backend -->|Verify HMAC| Verification[Webhook Verification Layer]
@@ -50,7 +50,7 @@ Prisma provides ORM for PostgreSQL.
 
 Frontend consumes analytics APIs for dashboard visualization.
 
-📡 API Endpoints
+ # API Endpoints
 Authentication
 
 POST /user/login → Store login (mocked email/store_name).
@@ -71,7 +71,7 @@ GET /data/orders-by-date?store={id}&startDate&endDate → Orders by date range.
 
 GET /data/top-customers?store={id} → Top customers by spend.
 
-### Database Schema (Prisma)
+# Database Schema (Prisma)
   //store
   model Store{
     id             String   @id @default(uuid())
@@ -141,7 +141,7 @@ GET /data/top-customers?store={id} → Top customers by spend.
   }
 
 
-### Known Limitations & Assumptions
+# Known Limitations & Assumptions
 
 Shopify may send update events before create events.
 
