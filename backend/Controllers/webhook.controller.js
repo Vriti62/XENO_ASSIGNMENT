@@ -16,17 +16,15 @@ exports.webhookData = async (req, res) => {
 
     await redis.set(redisKey, "1", "EX", 3600);
 
-    
-let storeData = await prisma.store.upsert({
-  where: { store_name: store },
-  update: {
-    ...(data.email ? { user_email: data.email } : {})
-  },
-  create: {
-    store_name: store,
-    user_email: data.email || null
-  }
-});
+    const storeData = await prisma.store.findUnique({
+      where: { store_name: storeDomain }
+    });
+
+    if (!storeData) {
+      console.log("Unknown store:", storeDomain);
+      return res.status(401).json({ msg: "Unauthorized store" });
+    }
+
 
     switch(event) {
       case "customers/create":

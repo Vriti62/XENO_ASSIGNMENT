@@ -1,37 +1,32 @@
 const crypto = require("crypto");
+const prisma = require("../db/db.config");
 
-// Parse all secrets from .env (single JSON variable)
-const STORE_SECRETS = process.env.STORE_SECRETS
-  ? JSON.parse(process.env.STORE_SECRETS)
-  : {};
-
-exports.verifyShopifyWebhook = (req, res, next) => {
+exports.verifyShopifyWebhook = async (req, res, next) => {
   try {
     const hmacHeader = req.get("X-Shopify-Hmac-Sha256");
     const body = req.rawBody;
-    const store = req.headers["x-shopify-shop-domain"];
+    const storeDomain = req.headers["x-shopify-shop-domain"];
 
-    const secret = STORE_SECRETS[store];
+    const store = await prisma.store.findUnique({
+      where: { store_name: storeDomain }
+    });
 
-    console.log("Incoming store:", store);
-    console.log("Resolved secret:", secret);
-
-    if (!secret) {
-      console.log("Unknown store:", store);
+    if (!store || !store.webhook_secret) {
+      console.log("Unknown store:", storeDomain);
       return res.status(401).json({ msg: "Unauthorized store" });
     }
 
     const digest = crypto
-      .createHmac("sha256", secret)
+      .createHmac("sha256", store.webhook_secret)
       .update(body, "utf8")
       .digest("base64");
 
     if (digest !== hmacHeader) {
-      console.log("not authorized");
+      console.log("Invalid HMAC for:", storeDomain);
       return res.status(401).json({ msg: "Unauthorized - Invalid HMAC" });
     }
 
-    console.log("auth done");
+    console.log("Authenticated webhook for:", storeDomain);
     next();
   } catch (err) {
     console.error("Webhook verification failed:", err);
