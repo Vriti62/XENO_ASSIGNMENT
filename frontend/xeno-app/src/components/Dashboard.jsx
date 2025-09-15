@@ -20,16 +20,16 @@ export default function Dashboard({ user, onLogout }) {
   const fetchDashboardData = async () => {
     setLoading(true);
     try {
-      const customersResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/data/customers-count`, { withCredentials: true });
+      const customersResponse = await axios.get(`${process.env.REACT_APP_API_URL}/data/customers-count`, { withCredentials: true });
       setTotalCustomers(customersResponse.data.total_customers);
 
-      const ordersResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/data/orders-by-date`, {
+      const ordersResponse = await axios.get(`${process.env.REACT_APP_API_URL}/data/orders-by-date`, {
         params: { store: user.id, startDate: dateRange.startDate, endDate: dateRange.endDate },
         withCredentials: true,
       });
       setOrdersData(ordersResponse.data.orders || []);
 
-      const topCustomersResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/data/top-customers`, {
+      const topCustomersResponse = await axios.get(`${process.env.REACT_APP_API_URL}/data/top-customers`, {
         params: { store: user.id },
         withCredentials: true,
       });

@@ -16,7 +16,7 @@ const LoginForm = ({ onLogin }) => {
 
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/user/login`,
+        `${process.env.REACT_APP_API_URL}/user/login`,
         formData,
         {
           withCredentials: true,
