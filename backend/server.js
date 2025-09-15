@@ -28,8 +28,8 @@ app.use(express.json({
 }));
 
 app.use("/api", webhookData);
-app.use('/api/user', express.json(), userRoutes);
-app.use("/api/data", express.json(), dataRoutes);
+app.use('/api/user', userRoutes);
+app.use("/api/data",  dataRoutes);
 
 
 app.listen(PORT, ()=>{
