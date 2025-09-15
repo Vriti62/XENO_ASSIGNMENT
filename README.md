@@ -1,4 +1,3 @@
-Shopify Analytics Backend
 
 This project provides a full-stack service to receive, verify, and process Shopify Webhooks and show data for frontend dashboards. It supports multiple Shopify stores with per-store webhook secret verification, deduplication using Redis, and persistence via PostgreSQL + Prisma.
 
