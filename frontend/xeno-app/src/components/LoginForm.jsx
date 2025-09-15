@@ -1,55 +1,62 @@
-import { useState } from "react"
+import axios from 'axios';
+import { useState } from 'react';
 
 const LoginForm = ({ onLogin }) => {
   const [formData, setFormData] = useState({
-    store_name: "",
-    user_email: "",
-  })
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
+    store_name: '',
+    user_email: '',
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setLoading(true)
-    setError("")
+    e.preventDefault();
+    setLoading(true);
+    setError('');
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/user/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(formData),
-      })
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/api/user/login`,
+        formData,
+        {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
 
-      const data = await response.json()
-
-      if (response.ok) {
-        onLogin(data.user || formData)
+      if (response.status === 200) {
+        onLogin(response.data.user || formData);
       } else {
-        setError(data.message || "Login failed")
+        setError(response.data.message || 'Login failed');
       }
     } catch (err) {
-      setError("Network error. Please try again.")
+      setError(
+        err.response?.data?.message ||
+          err.message ||
+          'Network error. Please try again.'
+      );
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
-    })
-  }
+    });
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="card w-full max-w-md">
         <div className="text-center mb-6">
           <h1 className="text-2xl font-black text-primary">Shopify Analytics</h1>
-          <p className="text-muted-foreground">Sign in to view your store analytics</p>
+          <p className="text-muted-foreground">
+            Sign in to view your store analytics
+          </p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -80,14 +87,16 @@ const LoginForm = ({ onLogin }) => {
               required
             />
           </div>
-          {error && <div className="text-destructive text-sm text-center">{error}</div>}
+          {error && (
+            <div className="text-destructive text-sm text-center">{error}</div>
+          )}
           <button type="submit" className="btn btn-primary w-full" disabled={loading}>
-            {loading ? "Signing in..." : "Sign In"}
+            {loading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default LoginForm
+export default LoginForm;
