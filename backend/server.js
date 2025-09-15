@@ -24,9 +24,9 @@ app.use(
 );
 
 
-app.use("/api", webhookData);
-app.use("/api/user", userRoutes);
-app.use("/api/data", dataRoutes);
+app.use("/", webhookData);
+app.use("/user", userRoutes);
+app.use("/data", dataRoutes);
 
 
 app.use(express.static(path.join(__dirname, "build")));
