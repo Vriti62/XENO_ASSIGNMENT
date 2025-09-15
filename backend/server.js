@@ -11,15 +11,13 @@ const userRoutes = require('./Routes/user.routes');
 
 
 const cors = require('cors');
-app.use(cors({
-  origin: "https://xeno-assignment-2f.onrender.com",
-  credentials: true
-}));
-app.use((req, res, next) => {
-  console.log('CORS headers: ', res.getHeaders());
-  next();
-});
 
+app.use(cors({
+  origin: 'https://xeno-assignment-2f.onrender.com',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 
 
 app.use(cookieParser());
