@@ -15,11 +15,12 @@ datasource db {
 
 //store
 model Store{
-  id String @id @default(uuid())
-  store_name String @unique
-  user_email String? 
-  product Product[]
-  order Order[]
+  id             String   @id @default(uuid())
+  store_name     String   @unique
+  user_email     String?
+  webhook_secret String   
+  orders         Order[]
+  products       Product[]
   created_at DateTime @default(now())
 }
 

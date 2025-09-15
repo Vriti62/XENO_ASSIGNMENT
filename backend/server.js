@@ -4,6 +4,7 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const prisma = require("./db/db.config");
+const redis = require("./utils/redis");
 
 const webhookData = require("./Routes/webhook.routes");
 const dataRoutes = require("./Routes/data.routes");
