@@ -13,6 +13,9 @@ exports.verifyShopifyWebhook=(req, res, next) => {
     const store = req.headers["x-shopify-shop-domain"];
 
     const secret = STORE_SECRETS[store];
+        
+    console.log("Incoming store:", store);
+    console.log("Resolved secret:", secret);
     if (!secret) {
       console.log("Unknown store: ", store);
       return res.status(401).json({ msg: "Unauthorized store" });
