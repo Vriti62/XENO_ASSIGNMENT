@@ -1,7 +1,6 @@
 const dotenv = require('dotenv');
 dotenv.config();
 const express = require('express');
-const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 5000;
 const cookieParser = require('cookie-parser');
@@ -11,12 +10,16 @@ const  dataRoutes = require('./Routes/data.routes');
 const userRoutes = require('./Routes/user.routes');
 
 
-
-
+const cors = require('cors');
 app.use(cors({
   origin: "https://xeno-assignment-2f.onrender.com",
   credentials: true
 }));
+app.use((req, res, next) => {
+  console.log('CORS headers: ', res.getHeaders());
+  next();
+});
+
 
 
 app.use(cookieParser());
