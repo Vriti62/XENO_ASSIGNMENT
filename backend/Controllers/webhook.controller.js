@@ -17,14 +17,16 @@ exports.webhookData = async (req, res) => {
     await redis.set(redisKey, "1", "EX", 3600);
 
 
-    let storeData = await prisma.store.upsert({
-      where: { store_name: store },
-      update: {},
-      create: { 
-        store_name: store,
-        user_email:data.email 
-      }
-    });
+let storeData = await prisma.store.upsert({
+  where: { store_name: store },
+  update: {
+    ...(data.email ? { user_email: data.email } : {})
+  },
+  create: {
+    store_name: store,
+    user_email: data.email || null
+  }
+});
 
     switch(event) {
       case "customers/create":
